@@ -639,6 +639,8 @@ def build_case(config: dict[str, str]) -> dict[str, Any]:
         "deck": deck,
         "stimulus": stimulus,
         "probes": probes,
+        "output_probes": list(DEFAULT_PROBES),
+        "custom_probes": extra_probes,
         "source_manifest": source_manifest,
         "source_hashes": source_hashes,
         "custom_probe_bytes": custom_bytes,
@@ -716,21 +718,21 @@ def _raw_integrity(raw: Path, expected_probes: list[str]) -> dict[str, Any]:
     }
 
 
-def _plot(run_dir: Path, probes: list[str], log_stream) -> dict[str, Any]:
+def _plot(run_dir: Path, probes: list[str], output_name: str, log_stream) -> dict[str, Any]:
     command = [
         sys.executable, str(PLOTTER), "raw.csv",
         "-t", "stacked", "-c", "dark", "-j", "2pi",
-        "-s", *probes, "-x", "res.html",
+        "-s", *probes, "-x", output_name,
     ]
     log_stream.write("\n$ " + " ".join(command) + "\n")
     log_stream.flush()
     result = subprocess.run(
         command, cwd=run_dir, stdout=log_stream, stderr=subprocess.STDOUT, check=False,
     )
-    html = run_dir / "res.html"
+    html = run_dir / output_name
     if result.returncode != 0 or not html.is_file() or html.stat().st_size == 0:
         raise PlatformError(
-            f"josim-plot2.py failed or did not produce res.html (exit={result.returncode})"
+            f"josim-plot2.py failed or did not produce {output_name} (exit={result.returncode})"
         )
     body = html.read_text(encoding="utf-8", errors="replace")
     missing = [probe for probe in probes if probe not in body]
@@ -746,6 +748,7 @@ def _plot(run_dir: Path, probes: list[str], log_stream) -> dict[str, Any]:
         "theme": "dark",
         "phase_display": "rad/(2*pi)",
         "offline_standalone": True,
+        "file": output_name,
         "signal_count": len(probes),
         "html_bytes": html.stat().st_size,
         "html_sha256": sha256_file(html),
@@ -829,7 +832,11 @@ def _print_dry_run(ctx: dict[str, Any]) -> None:
     )
     print(f"AMPLITUDES: {json.dumps(checked['amplitudes'], sort_keys=True)}")
     print("STIMULUS SOURCES: 4 WL + 4 BL + 4 shared-row SE + 8 CLK = 20")
-    print(f"PROBES: {len(ctx['probes'])} ({ctx['config']['PROBE_PROFILE']})")
+    print(
+        f"PROBES: output={len(ctx['output_probes'])}; "
+        f"custom_diagnostics={len(ctx['custom_probes'])} "
+        f"({ctx['config']['PROBE_PROFILE']})"
+    )
     print(f"DECK_SHA256: {sha256_bytes(ctx['deck'].encode('utf-8'))}")
     print(f"STIMULUS_SHA256: {sha256_bytes(ctx['stimulus'].encode('utf-8'))}")
     print(f".tran: .tran {checked['dt_ps']}p {checked['stop_ps']}p")
@@ -879,7 +886,8 @@ def _reserve_run_id(case_name: str, runs_dir: Path = RUNS) -> tuple[str, Path]:
 
 def _render_preflight(ctx: dict[str, Any], parent_head: str | None, platform_sha: str,
                       solver_path: Path, solver_version: str | None,
-                      solver_sha256: str, run_id: str, run_dir: Path) -> str:
+                      solver_sha256: str, run_id: str, run_dir: Path,
+                      run_mode: str) -> str:
     config = ctx["config"]
     checked = ctx["checked"]
     source_items = "\n".join(
@@ -895,6 +903,15 @@ def _render_preflight(ctx: dict[str, Any], parent_head: str | None, platform_sha
         for signal in probe_manifest["signals"]
     )
     final_archive_name = f"{run_id}_{config['CASE_NAME']}.zip"
+    archive_line = (
+        f"- exact archive target: {DRIVE_TARGET / final_archive_name}"
+        if run_mode == "ARCHIVE_ON_COMPLETE"
+        else "- archive: not requested; local evidence only"
+    )
+    custom_plot_line = (
+        "- custom diagnostic plot: custom.html (only explicitly requested probes)"
+        if ctx["custom_probes"] else "- custom diagnostic plot: none"
+    )
     return f"""# PREFLIGHT — {config['CASE_NAME']}
 
 {CONTRACT_SENTENCE}
@@ -903,6 +920,7 @@ def _render_preflight(ctx: dict[str, Any], parent_head: str | None, platform_sha
 - parent_head: {parent_head or 'UNKNOWN'}
 - run_id: {run_id}
 - run directory: {run_dir}
+- run mode: {run_mode}
 - platform script SHA-256: {platform_sha}
 - solver: {solver_path}; version: {solver_version or 'UNKNOWN'}; binary SHA-256: {solver_sha256}
 - topology: V9_SHARED_ROW_SE_BL; 16 BVM, 16 QB, seven diagonal T1 channels, six carry CBs, one DFF
@@ -933,10 +951,12 @@ JoSIM P(...) raw values are radians. Probes are descriptive and are not event co
 ## Artifact scope
 
 - expected raw: raw.csv in this run directory
-- expected plot: res.html in this run directory
-- one archive target: {DRIVE_TARGET / final_archive_name}
-- Drive folder ID: {DRIVE_FOLDER_ID}
+- expected output page: res.html (eight final output voltages only)
+- expected custom page: {"custom.html" if ctx['custom_probes'] else "none"}
+{archive_line}
+- Drive folder ID (archive mode): {DRIVE_FOLDER_ID if run_mode == 'ARCHIVE_ON_COMPLETE' else 'not used'}
 - visualization: standalone res.html using scripts/josim-plot2.py, stacked/dark, phase display rad/(2*pi)
+{custom_plot_line}
 - no SFQ classifier, arithmetic verdict, timing-margin analysis, or mechanism report
 - run artifacts include deck, stimulus, env snapshot, this PREFLIGHT, probe manifest,
   raw/log where produced, per-run manifest, frozen sources, and res.html when raw QA permits
@@ -945,7 +965,8 @@ JoSIM P(...) raw values are radians. Probes are descriptive and are not event co
 
 def _write_run_files(run_id: str, run_dir: Path, ctx: dict[str, Any],
                      config_bytes: bytes, solver: Path, solver_version: str | None,
-                     parent_head: str | None, worktree_dirty: bool | None) -> dict[str, Any]:
+                     parent_head: str | None, worktree_dirty: bool | None,
+                     run_mode: str) -> dict[str, Any]:
     config = ctx["config"]
     checked = ctx["checked"]
     snapshot = run_dir / "USER_CASE.snapshot.env"
@@ -977,7 +998,7 @@ def _write_run_files(run_id: str, run_dir: Path, ctx: dict[str, Any],
     platform_sha = sha256_file(Path(__file__).resolve())
     preflight = _render_preflight(
         ctx, parent_head, platform_sha, solver, solver_version,
-        sha256_file(solver), run_id, run_dir,
+        sha256_file(solver), run_id, run_dir, run_mode,
     )
     (run_dir / "PREFLIGHT.md").write_text(preflight, encoding="utf-8", newline="\n")
     manifest = {
@@ -986,6 +1007,7 @@ def _write_run_files(run_id: str, run_dir: Path, ctx: dict[str, Any],
         "case_name": config["CASE_NAME"],
         "created_utc": datetime.now(timezone.utc).isoformat(),
         "status": "PREFLIGHT_READY",
+        "run_mode": run_mode,
         "protocol": "V9_SHARED_ROW_SE_BL",
         "operands": {"A": checked["a"], "B": checked["b"]},
         "rounds": checked["rounds"],
@@ -1024,40 +1046,86 @@ def _write_run_files(run_id: str, run_dir: Path, ctx: dict[str, Any],
         "solver_exit_code": None,
         "raw_integrity": None,
         "visualization": None,
-        "archive": None,
-        "scientific_analysis": {
-            "performed": False,
-            "sfq_event_counts": "NOT_COMPUTED",
-            "multiplication_correctness": "NOT_EVALUATED",
-            "timing_margin": "NOT_EVALUATED",
-        },
+        "evidence_files": [],
     }
+    if ctx["custom_probe_bytes"] is not None:
+        manifest["source_hashes"]["CUSTOM_PROBES.snapshot.txt"] = sha256_file(
+            run_dir / "CUSTOM_PROBES.snapshot.txt"
+        )
     atomic_json(run_dir / "manifest.json", manifest)
     return manifest
 
 
-def _archive_inputs(run_dir: Path) -> list[Path]:
-    allowed = {
-        "deck.cir", "stimulus.inc", "USER_CASE.snapshot.env", "PREFLIGHT.md",
-        "probe_manifest.json", "manifest.json", "raw.csv", "run.log",
-        "res.html", "CUSTOM_PROBES.snapshot.txt",
-    }
-    paths = [path for path in run_dir.iterdir() if path.is_file() and path.name in allowed]
+def _finalize_manifest(run_dir: Path, manifest: dict[str, Any],
+                       status: str, solver_exit_code: int,
+                       raw_integrity: dict[str, Any],
+                       visualization: dict[str, Any]) -> None:
+    manifest["status"] = status
+    manifest["solver_exit_code"] = solver_exit_code
+    manifest["raw_integrity"] = raw_integrity
+    manifest["visualization"] = visualization
+    paths = [
+        run_dir / name for name in (
+            "deck.cir", "stimulus.inc", "USER_CASE.snapshot.env", "PREFLIGHT.md",
+            "probe_manifest.json", "run.log", "raw.csv", "res.html",
+            "custom.html", "CUSTOM_PROBES.snapshot.txt",
+        ) if (run_dir / name).is_file()
+    ]
     sources = run_dir / "sources_frozen"
     if sources.is_dir():
-        paths.extend(path for path in sources.iterdir() if path.is_file() and not path.is_symlink())
-    return sorted(paths, key=lambda path: path.relative_to(run_dir).as_posix())
+        paths.extend(p for p in sorted(sources.iterdir()) if p.is_file() and not p.is_symlink())
+    manifest["evidence_files"] = [
+        {
+            "path": path.relative_to(run_dir).as_posix(),
+            "bytes": path.stat().st_size,
+            "sha256": sha256_file(path),
+        }
+        for path in sorted(paths, key=lambda p: p.relative_to(run_dir).as_posix())
+    ]
+    atomic_json(run_dir / "manifest.json", manifest)
 
 
-def create_archive(run_dir: Path, target_dir: Path,
+def _archive_inputs(run_dir: Path, manifest: dict[str, Any]) -> list[tuple[str, Path]]:
+    records = manifest.get("evidence_files")
+    if not isinstance(records, list) or not records:
+        raise PlatformError("run manifest is not finalized with evidence_files")
+    root = run_dir.resolve(strict=True)
+    members: list[tuple[str, Path]] = []
+    seen: set[str] = set()
+    for record in records:
+        rel = record.get("path")
+        if not isinstance(rel, str) or not rel:
+            raise PlatformError("manifest evidence path is malformed")
+        relative = Path(rel)
+        if relative.is_absolute() or ".." in relative.parts or rel == "archive_receipt.json":
+            raise PlatformError(f"unsafe or non-evidence archive member: {rel!r}")
+        path = run_dir / relative
+        if path.is_symlink() or not path.is_file():
+            raise PlatformError(f"evidence file missing or symlinked: {rel}")
+        resolved = path.resolve(strict=True)
+        if not resolved.is_relative_to(root):
+            raise PlatformError(f"evidence path escapes run directory: {rel}")
+        if rel in seen:
+            raise PlatformError(f"duplicate evidence path in manifest: {rel}")
+        if path.stat().st_size != int(record["bytes"]) or sha256_file(path) != record["sha256"]:
+            raise PlatformError(f"evidence file changed since manifest freeze: {rel}")
+        seen.add(rel)
+        members.append((rel, path))
+    manifest_path = run_dir / "manifest.json"
+    if manifest_path.is_symlink() or not manifest_path.is_file():
+        raise PlatformError("fixed manifest.json is missing or symlinked")
+    members.append(("manifest.json", manifest_path))
+    return members
+
+
+def create_archive(run_dir: Path, target_dir: Path = DRIVE_TARGET,
                    folder_id: str = DRIVE_FOLDER_ID) -> dict[str, Any]:
-    """Create one self-contained ZIP in target_dir; target_dir is the DriveFS folder."""
+    """Write one immutable ZIP at the provided exact DriveFS target path."""
     if not target_dir.is_dir() or not os.access(target_dir, os.W_OK):
         raise PlatformError(f"Drive archive target is not accessible/writable: {target_dir}")
     manifest_path = run_dir / "manifest.json"
-    if not manifest_path.is_file():
-        raise PlatformError("cannot archive a run without manifest.json")
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest_bytes = manifest_path.read_bytes()
+    manifest = json.loads(manifest_bytes.decode("utf-8"))
     run_id = manifest["run_id"]
     case_name = manifest["case_name"]
     final_name = f"{run_id}_{case_name}.zip"
@@ -1065,30 +1133,17 @@ def create_archive(run_dir: Path, target_dir: Path,
     if final_path.exists():
         raise PlatformError(f"refusing to overwrite existing Drive package: {final_path}")
     temp_path = target_dir / f".{final_name}.{uuid.uuid4().hex}.tmp"
-    members = _archive_inputs(run_dir)
-    if not members:
-        raise PlatformError("no run evidence files found to archive")
+    members = _archive_inputs(run_dir, manifest)
     member_hashes = {
-        path.relative_to(run_dir).as_posix(): sha256_file(path) for path in members
+        rel: sha256_file(path) for rel, path in members
     }
-    archive_manifest = {
-        "schema": "sfq-clock-two-read-drive-archive-manifest-v1",
-        "run_id": run_id,
-        "drive_folder_id": folder_id,
-        "drive_file_name": final_name,
-        "members_sha256": member_hashes,
-        "archive_sha256_note": "A ZIP cannot contain its own final SHA-256; the outer run manifest records it.",
-    }
+    manifest_sha = sha256_bytes(manifest_bytes)
     reserved_fd: int | None = None
     reserved_inode: tuple[int, int] | None = None
     try:
         with zipfile.ZipFile(temp_path, "x", compression=zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
-            for path in members:
-                archive.write(path, arcname=f"{run_id}/{path.relative_to(run_dir).as_posix()}")
-            archive.writestr(
-                f"{run_id}/ARCHIVE_MANIFEST.json",
-                json.dumps(archive_manifest, ensure_ascii=False, indent=2) + "\n",
-            )
+            for rel, path in members:
+                archive.write(path, arcname=f"{run_id}/{rel}")
         with zipfile.ZipFile(temp_path, "r") as archive:
             bad = archive.testzip()
             if bad is not None:
@@ -1100,6 +1155,13 @@ def create_archive(run_dir: Path, target_dir: Path,
                         digest.update(block)
                 if digest.hexdigest() != expected_hash:
                     raise PlatformError(f"ZIP member SHA mismatch: {rel}")
+            zipped_manifest = archive.read(f"{run_id}/manifest.json")
+            if zipped_manifest != manifest_bytes:
+                raise PlatformError("ZIP manifest bytes differ from the frozen local manifest")
+            if sha256_bytes(zipped_manifest) != manifest_sha:
+                raise PlatformError("ZIP manifest SHA differs from the frozen local manifest SHA")
+            if f"{run_id}/archive_receipt.json" in archive.namelist():
+                raise PlatformError("archive_receipt.json must remain outside the ZIP")
         zip_sha = sha256_file(temp_path)
         zip_bytes = temp_path.stat().st_size
         reserved_fd = os.open(final_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
@@ -1111,22 +1173,18 @@ def create_archive(run_dir: Path, target_dir: Path,
         if sha256_file(final_path) != zip_sha or final_path.stat().st_size != zip_bytes:
             raise PlatformError("final DriveFS path bytes differ from the verified temporary ZIP")
         return {
-            "status": "DRIVEFS_PATH_SHA_VERIFIED_CLOUD_SYNC_UNCONFIRMED",
-            "provider": "Google DriveFS",
+            "zip_name": final_name,
             "drive_folder_id": folder_id,
-            "drive_file_name": final_name,
             "drive_path": str(final_path),
             "drive_file_id": None,
             "zip_sha256": zip_sha,
             "zip_bytes": zip_bytes,
-            "member_count": len(member_hashes) + 1,
+            "manifest_sha256": manifest_sha,
+            "manifest_bytes_identical_in_zip": True,
+            "member_count": len(members),
             "member_sha256_verified": True,
             "crc_verified": True,
-            "offline_visualization_included": (run_dir / "res.html").is_file(),
-            "cloud_sync_note": (
-                "The shell verified bytes at the exact DriveFS path. DriveFS exposes no cloud-sync "
-                "receipt or file ID here; remote sync is not marked verified by this local check."
-            ),
+            "cloud_sync_status": "UNCONFIRMED",
         }
     except Exception:
         if temp_path.exists():
@@ -1143,14 +1201,70 @@ def create_archive(run_dir: Path, target_dir: Path,
         raise
 
 
-def execute(ctx: dict[str, Any], config_bytes: bytes) -> int:
-    # Archive destination is required: fail closed before reserving a run ID or
-    # invoking JoSIM, so a solve cannot silently become an unarchived experiment.
-    ok, message = _drive_write_probe()
+def _write_receipt_no_overwrite(path: Path, receipt: dict[str, Any]) -> None:
+    if path.exists():
+        raise PlatformError(f"archive receipt already exists; refusing to overwrite: {path}")
+    temp = path.with_name(f".{path.name}.{uuid.uuid4().hex}.tmp")
+    data = (json.dumps(receipt, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    try:
+        with temp.open("xb") as stream:
+            stream.write(data)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.link(temp, path)
+        temp.unlink()
+    finally:
+        if temp.exists():
+            temp.unlink()
+
+
+def archive_completed_run(run_id: str, target_dir: Path = DRIVE_TARGET,
+                          runs_dir: Path = RUNS, folder_id: str = DRIVE_FOLDER_ID) -> dict[str, Any]:
+    if not re.fullmatch(r"V9R\d{3}_[A-Za-z0-9][A-Za-z0-9_-]{0,47}", run_id):
+        raise PlatformError("archive command requires an exact V9R###_CASE run ID")
+    run_dir = runs_dir / run_id
+    if run_dir.is_symlink() or not run_dir.is_dir():
+        raise PlatformError(f"completed run directory missing or symlinked: {run_dir}")
+    receipt_path = run_dir / "archive_receipt.json"
+    if receipt_path.exists():
+        raise PlatformError(f"archive receipt already exists; no second ZIP will be created: {receipt_path}")
+    ok, message = _drive_write_probe(target_dir)
     if not ok:
-        print(f"ERROR: {message}; JoSIM was not invoked.")
-        return 2
-    solver = _solver_path()
+        raise PlatformError(f"{message}; original raw and manifest were left unchanged")
+    manifest_bytes_before = (run_dir / "manifest.json").read_bytes()
+    manifest = json.loads(manifest_bytes_before.decode("utf-8"))
+    if manifest.get("run_id") != run_id or not manifest.get("evidence_files"):
+        raise PlatformError("run manifest identity or frozen evidence list is invalid")
+    archive_info = create_archive(run_dir, target_dir, folder_id)
+    receipt = {
+        "schema": "sfq-clock-two-read-archive-receipt-v1",
+        "run_id": run_id,
+        "created_utc": datetime.now(timezone.utc).isoformat(),
+        "archive_status": "ZIP_CREATED_AND_LOCAL_BYTES_VERIFIED",
+        **archive_info,
+        "cloud_sync_status": "UNCONFIRMED",
+        "cloud_sync_note": (
+            "No Drive API/file-ID readback was performed. Do not describe this ZIP as cloud-upload-confirmed."
+        ),
+    }
+    _write_receipt_no_overwrite(receipt_path, receipt)
+    if (run_dir / "manifest.json").read_bytes() != manifest_bytes_before:
+        raise PlatformError("archive operation modified the fixed run manifest")
+    return receipt
+
+def execute(ctx: dict[str, Any], config_bytes: bytes, run_local: bool = False,
+            runs_dir: Path = RUNS, solver_override: Path | None = None,
+            drive_target: Path = DRIVE_TARGET) -> int:
+    run_mode = "LOCAL_ONLY" if run_local else "ARCHIVE_ON_COMPLETE"
+    if run_local:
+        message = "run-local selected; DriveFS not checked or used"
+    else:
+        ok, message = _drive_write_probe(drive_target)
+        if not ok:
+            print(f"ERROR: {message}; JoSIM was not invoked.")
+            return 2
+
+    solver = solver_override or _solver_path()
     if solver is None:
         print("ERROR: josim-cli not found; JoSIM was not invoked.")
         return 2
@@ -1160,16 +1274,18 @@ def execute(ctx: dict[str, Any], config_bytes: bytes) -> int:
     )
     solver_version = version_result.stdout.strip() or f"version query exit={version_result.returncode}"
     parent_head, dirty = _git_state()
-    run_id, run_dir = _reserve_run_id(ctx["config"]["CASE_NAME"])
+    run_id, run_dir = _reserve_run_id(ctx["config"]["CASE_NAME"], runs_dir)
     manifest = _write_run_files(
-        run_id, run_dir, ctx, config_bytes, solver, solver_version, parent_head, dirty
+        run_id, run_dir, ctx, config_bytes, solver, solver_version,
+        parent_head, dirty, run_mode,
     )
     log_path = run_dir / "run.log"
     with log_path.open("x", encoding="utf-8", newline="\n") as log:
         log.write(f"run_id={run_id}\n")
+        log.write(f"run_mode={run_mode}\n")
         log.write(f"solver={solver}\n")
         log.write(f"solver_version_query={solver_version}\n")
-        log.write(f"drive_write_preflight={message}\n")
+        log.write(f"archive_preflight={message}\n")
         log.write(f"command={solver} -o raw.csv deck.cir\n")
         log.flush()
         manifest["status"] = "SOLVER_RUNNING"
@@ -1181,87 +1297,140 @@ def execute(ctx: dict[str, Any], config_bytes: bytes) -> int:
         )
         log.flush()
         os.fsync(log.fileno())
-    manifest["solver_exit_code"] = result.returncode
-    manifest["status"] = "SOLVER_EXITED"
+
     raw = run_dir / "raw.csv"
     if raw.exists():
         try:
-            manifest["raw_integrity"] = _raw_integrity(raw, ctx["probes"])
-            manifest["status"] = "RAW_BASIC_QA_PASS"
+            raw_integrity = _raw_integrity(raw, ctx["probes"])
         except PlatformError as exc:
-            manifest["status"] = "RAW_ARTIFACT_INVALID"
-            manifest["raw_integrity"] = {"status": "FAIL", "reason": str(exc)}
+            raw_integrity = {"status": "FAIL", "reason": str(exc)}
     else:
-        manifest["raw_integrity"] = {"status": "FAIL", "reason": "raw.csv was not produced"}
-    if result.returncode == 0 and manifest["raw_integrity"].get("status") == "PASS":
+        raw_integrity = {"status": "FAIL", "reason": "raw.csv was not produced"}
+
+    visualization: dict[str, Any] = {
+        "status": "NOT_GENERATED_RAW_QA_FAILED",
+        "res.html": None,
+        "custom.html": None,
+        "res_probe_labels": list(ctx["output_probes"]),
+        "custom_probe_labels": list(ctx["custom_probes"]),
+    }
+    if raw_integrity.get("status") == "PASS":
+        raw_sha_before_plot = raw_integrity["raw_sha256"]
         try:
-            raw_sha_before_plot = manifest["raw_integrity"]["raw_sha256"]
             with log_path.open("a", encoding="utf-8", newline="\n") as log:
-                plot_qa = _plot(run_dir, ctx["probes"], log)
+                res_qa = _plot(run_dir, ctx["output_probes"], "res.html", log)
+                custom_qa = None
+                if ctx["custom_probes"]:
+                    custom_qa = _plot(run_dir, ctx["custom_probes"], "custom.html", log)
             raw_sha_after_plot = sha256_file(raw)
             if raw_sha_after_plot != raw_sha_before_plot:
-                raise PlatformError("raw.csv SHA changed while rendering res.html")
-            manifest["raw_integrity"]["sha256_unchanged_during_plot"] = True
-            manifest["visualization"] = plot_qa
-            manifest["status"] = "ARTIFACT_QA_PASS"
+                raise PlatformError("raw.csv SHA changed while rendering HTML")
+            raw_integrity["sha256_unchanged_during_plot"] = True
+            visualization = {
+                "status": "PASS",
+                "res.html": res_qa,
+                "custom.html": custom_qa,
+                "res_probe_labels": list(ctx["output_probes"]),
+                "custom_probe_labels": list(ctx["custom_probes"]),
+            }
         except (OSError, PlatformError) as exc:
-            manifest["visualization"] = {"status": "FAIL", "reason": str(exc)}
-            manifest["status"] = "POSTPROCESS_FAILURE_RAW_PRESERVED"
+            raw_integrity["sha256_after_plot_attempt"] = sha256_file(raw)
+            raw_integrity["sha256_unchanged_during_plot"] = (
+                raw_integrity["sha256_after_plot_attempt"] == raw_sha_before_plot
+            )
+            visualization = {
+                "status": "FAIL",
+                "reason": str(exc),
+                "res.html": (
+                    {"sha256": sha256_file(run_dir / "res.html")}
+                    if (run_dir / "res.html").is_file() else None
+                ),
+                "custom.html": (
+                    {"sha256": sha256_file(run_dir / "custom.html")}
+                    if (run_dir / "custom.html").is_file() else None
+                ),
+                "res_probe_labels": list(ctx["output_probes"]),
+                "custom_probe_labels": list(ctx["custom_probes"]),
+            }
+
+    if result.returncode != 0:
+        status = "SOLVER_FAILURE_RAW_PRESERVED"
+    elif raw_integrity.get("status") != "PASS":
+        status = "RAW_ARTIFACT_INVALID"
+    elif visualization.get("status") != "PASS":
+        status = "POSTPROCESS_FAILURE_RAW_PRESERVED"
     else:
-        manifest["visualization"] = {"status": "NOT_GENERATED_RAW_OR_SOLVER_QA_FAILED"}
-        if result.returncode != 0:
-            manifest["status"] = "SOLVER_FAILURE_RAW_PRESERVED"
-    manifest["run_log_sha256_before_archive"] = sha256_file(log_path)
-    intended_archive_name = f"{run_id}_{ctx['config']['CASE_NAME']}.zip"
-    manifest["archive"] = {
-        "status": "PACKAGE_BUILDING",
-        "provider": "Google DriveFS",
-        "drive_folder_id": DRIVE_FOLDER_ID,
-        "drive_file_name": intended_archive_name,
-        "drive_path": str(DRIVE_TARGET / intended_archive_name),
-        "drive_file_id": None,
-        "zip_sha256": None,
-    }
-    atomic_json(run_dir / "manifest.json", manifest)
-    try:
-        archive = create_archive(run_dir, DRIVE_TARGET)
-        manifest["archive"] = archive
-        if manifest["status"] == "ARTIFACT_QA_PASS":
-            manifest["status"] = "ARTIFACT_QA_PASS_ARCHIVE_CLOUD_SYNC_UNCONFIRMED"
-    except (OSError, PlatformError, zipfile.BadZipFile) as exc:
-        manifest["archive"] = {"status": "ARCHIVE_BLOCKED", "reason": str(exc)}
-        manifest["status"] += "_ARCHIVE_BLOCKED"
-    atomic_json(run_dir / "manifest.json", manifest)
-    print(json.dumps({
+        status = "ARTIFACT_QA_PASS"
+
+    _finalize_manifest(run_dir, manifest, status, result.returncode, raw_integrity, visualization)
+    receipt: dict[str, Any] | None = None
+    archive_error: str | None = None
+    if not run_local:
+        try:
+            receipt = archive_completed_run(run_id, drive_target, runs_dir)
+        except (OSError, PlatformError, zipfile.BadZipFile) as exc:
+            archive_error = str(exc)
+
+    summary = {
         "run_id": run_id,
         "run_dir": str(run_dir),
-        "status": manifest["status"],
+        "status": status,
         "solver_exit_code": result.returncode,
-        "raw_sha256": (manifest.get("raw_integrity") or {}).get("raw_sha256"),
-        "archive": manifest.get("archive"),
+        "raw_sha256": raw_integrity.get("raw_sha256"),
+        "run_mode": run_mode,
+        "archive_receipt": str(run_dir / "archive_receipt.json") if receipt else None,
+        "archive_status": receipt.get("cloud_sync_status") if receipt else (
+            "NOT_REQUESTED" if run_local else "FAILED_OR_UNAVAILABLE"
+        ),
+        "archive_error": archive_error,
+        "scientific_analysis_performed": False,
+    }
+    print(json.dumps(summary, ensure_ascii=False, indent=2))
+    artifact_ok = (
+        result.returncode == 0
+        and raw_integrity.get("status") == "PASS"
+        and visualization.get("status") == "PASS"
+    )
+    if not artifact_ok:
+        return 3
+    if not run_local and receipt is None:
+        return 4
+    return 0
+
+
+def _print_archive_receipt(receipt: dict[str, Any]) -> None:
+    print(json.dumps({
+        "archive_status": receipt["archive_status"],
+        "zip_name": receipt["zip_name"],
+        "zip_sha256": receipt["zip_sha256"],
+        "manifest_sha256": receipt["manifest_sha256"],
+        "manifest_bytes_identical_in_zip": receipt["manifest_bytes_identical_in_zip"],
+        "drive_path": receipt["drive_path"],
+        "drive_file_id": receipt["drive_file_id"],
+        "cloud_sync_status": receipt["cloud_sync_status"],
         "scientific_analysis_performed": False,
     }, ensure_ascii=False, indent=2))
-    return 0 if (
-        result.returncode == 0
-        and manifest["raw_integrity"].get("status") == "PASS"
-        and manifest.get("visualization", {}).get("status") == "PASS"
-        and manifest.get("archive", {}).get("status")
-        == "DRIVEFS_PATH_SHA_VERIFIED_CLOUD_SYNC_UNCONFIRMED"
-    ) else 3
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--dry-run", action="store_true", help="render and mechanically validate only")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--dry-run", action="store_true", help="render and mechanically validate only")
+    mode.add_argument("--run-local", action="store_true", help="run once without DriveFS archive")
+    mode.add_argument("--archive-run", metavar="RUN_ID", help="archive an existing completed run")
     args = parser.parse_args(argv)
     try:
+        if args.archive_run:
+            receipt = archive_completed_run(args.archive_run)
+            _print_archive_receipt(receipt)
+            return 0
         config, config_bytes = read_config()
         ctx = build_case(config)
         if args.dry_run:
             _print_dry_run(ctx)
             return 0
-        return execute(ctx, config_bytes)
-    except (PlatformError, OSError, ValueError, KeyError, json.JSONDecodeError) as exc:
+        return execute(ctx, config_bytes, run_local=args.run_local)
+    except (PlatformError, OSError, ValueError, KeyError, json.JSONDecodeError, zipfile.BadZipFile) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
 

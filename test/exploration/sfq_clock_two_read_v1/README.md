@@ -33,15 +33,32 @@ WRITE0, READ0, or a second write.
 
     ./try.sh --dry-run
     ./try.sh
+    ./try.sh --run-local
 
 The dry-run renders and validates the deck, PWL, topology, source closure and
 probe list in memory. It does not invoke JoSIM, create a run directory, or
-reserve an ID. A normal invocation is exactly one physical solve. Each run
-gets a non-reused V9R001+ ID under runs/; this namespace is separate from the
-retired platform's A001–A112 sequence. Existing raw, log, or run directories
-are never overwritten. Solver or post-processing failures remain in their
-allocated run directory. The runner does not compute SFQ counts, multiplication
-correctness, mechanism, or clock margin.
+reserve an ID. A normal `./try.sh` is strict archive mode: it checks the exact
+configured DriveFS destination before reserving an ID or invoking JoSIM, runs
+one solve, then attempts to archive the completed evidence. If DriveFS is
+unavailable at preflight, the solver is not invoked.
+
+Use `./try.sh --run-local` to explicitly run one solve without checking or
+using DriveFS. It stores all local evidence under `runs/<RUN_ID>/` and does not
+create a ZIP. If that run is ready to archive later, use:
+
+    ./archive.sh V9R001_CASE_NAME
+
+The archive command accepts only an exact run ID and writes only to the fixed
+DriveFS destination below; it has no alternate destination or local/D: fallback.
+Raw is never removed if archive creation fails. A ZIP verified at the local
+DriveFS mount is not proof of cloud synchronization: the separate receipt says
+`cloud_sync_status=UNCONFIRMED` and does not invent a Drive File ID.
+
+Each run gets a non-reused V9R001+ ID under runs/; this namespace is separate
+from the retired platform's A001–A112 sequence. Existing raw, log, or run
+directories are never overwritten. Solver or post-processing failures remain
+in their allocated run directory. The runner does not compute SFQ counts,
+multiplication correctness, mechanism, or clock margin.
 
 ## View results and add probes
 
@@ -55,8 +72,8 @@ so the page is standalone and works offline. Default raw probes are exactly:
 
     V(S_D0_OUT) ... V(S_D6_OUT), V(DFF_O)
 
-For extra signals, set PROBE_PROFILE=CUSTOM and provide a file path relative to
-this directory, for example:
+For extra raw signals, set PROBE_PROFILE=CUSTOM and provide a file path relative
+to this directory, for example:
 
     PROBE_PROFILE=CUSTOM
     CUSTOM_PROBES_FILE=tests/fixtures/custom_probes_sample.txt
@@ -67,36 +84,42 @@ each requested node/element against the rendered deck and frozen subcircuits
 before any solve. This is a static grammar/reference check, not a JoSIM parser
 execution: the available JoSIM sanity-check switch still runs a transient, so
 actual parser acceptance is not claimed without a user-authorized solve.
-CUSTOM contains the eight outputs plus only those explicit extra probes; there
-is no implicit FULL DEBUG profile. Probes never change electrical topology.
+In both profiles, `res.html` contains only the eight final outputs. CUSTOM adds
+only explicitly listed diagnostics to `raw.csv` and creates one additional
+`custom.html` containing only those diagnostics. There is no implicit FULL
+DEBUG profile. Probes never change electrical topology.
 
 ## Evidence, raw access, and Drive archive
 
 Each run keeps deck.cir, stimulus.inc, USER_CASE.snapshot.env, raw.csv,
-res.html when plotting is possible, run.log, PREFLIGHT.md, probe_manifest.json,
-manifest.json, and sources_frozen/. The raw is directly readable at
+res.html when plotting is possible, `custom.html` only for CUSTOM probes,
+run.log, PREFLIGHT.md, probe_manifest.json, manifest.json, and sources_frozen/.
+The raw is directly readable at
 runs/<RUN_ID>/raw.csv and is not ignored by Git; it is not deleted after
 archiving. The local runs/.gitignore also re-includes per-run JSON manifests
 despite the repository-wide JSON ignore rule. Share that path and the run
 manifest for later ChatGPT review; commits remain an explicit user/Codex action.
 
-One self-contained ZIP per run is written directly to the configured Google
-DriveFS folder, not to a permanent local ZIP or D: mirror:
+One self-contained ZIP per archived run is written directly to the configured
+Google DriveFS folder, not to a permanent local ZIP or D: mirror:
 
     G:\.shortcut-targets-by-id\1--nlY7Nq5ArVPydJNrnQf-EGmwN-undh\BVM_Backages
 
 The WSL mount form expected by this platform is
 /mnt/g/.shortcut-targets-by-id/1--nlY7Nq5ArVPydJNrnQf-EGmwN-undh/BVM_Backages.
-There is no alternate-path fallback. An actual run performs an exclusive
-write/read/unlink preflight before reserving an ID or invoking JoSIM; if that
-exact folder is unavailable, the physical solve does not start. The ZIP is
-first written under a unique temporary name in the target folder, checked for
-CRC and every member SHA, then renamed to its unique final name. The final
-DriveFS path bytes are SHA-checked. The run manifest reports the Drive folder
-ID, path, file name and ZIP SHA; the shell does not invent a Drive file ID or
-claim cloud-sync verification from a local filesystem read. If a Drive API
-metadata check is not available, the manifest explicitly leaves remote sync
-unconfirmed.
+There is no alternate-path fallback. Archive mode performs an exclusive
+write/read/unlink preflight before reserving an ID or invoking JoSIM; the
+separate archive command repeats this check. The ZIP is first written under a
+unique temporary name in the target folder, checked for CRC and every member
+SHA, then renamed to its unique final name. The final DriveFS path bytes are
+SHA-checked.
+
+`manifest.json` is finalized before packaging and contains run facts and
+evidence hashes only. The ZIP contains those exact manifest bytes; its own SHA
+is not embedded in itself. `archive_receipt.json` is a separate local sidecar,
+excluded from the ZIP, and records the ZIP SHA, exact DriveFS path/folder,
+unknown File ID, and `UNCONFIRMED` cloud-sync state. Archiving never edits the
+frozen manifest or deletes raw.
 
 No raw-only or metadata-only companion ZIP is created. The single archive
 contains the run config, deck, PWL, frozen source closure, log, raw and

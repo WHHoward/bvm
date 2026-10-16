@@ -93,7 +93,7 @@ The current USER_CASE.env dry-run rendered:
 - Fail-closed test with an unavailable Drive target — JoSIM subprocess not
   invoked and no run ID reserved.
 
-## DriveFS acceptance blocker
+## DriveFS archive-mode acceptance blocker (still unresolved)
 
 The required target is:
 
@@ -103,15 +103,45 @@ The exact path check returned “No such file or directory”; the writable chec
 failed. rclone was not available. No alternate path was guessed, no ZIP was
 written to Drive or D:, and no remote file ID or cloud sync receipt was claimed.
 
-The runner is fail-closed: a real ./try.sh invocation first performs an
-exclusive write/read/unlink test at that exact target. If unavailable, it
-returns before reserving a run ID or invoking JoSIM. When available, it writes
-one self-contained ZIP directly there, validates CRC/member hashes and the
-final path SHA, and records the folder ID, path, file name, and ZIP SHA. The
-shell cannot independently prove asynchronous cloud sync or obtain a Drive
-file ID from this environment; the manifest deliberately marks that remote
-verification as unconfirmed rather than claiming success.
+The default `./try.sh` archive mode remains fail-closed: it performs an
+exclusive write/read/unlink test at that exact target and, if unavailable,
+returns before reserving a run ID or invoking JoSIM. Explicit
+`./try.sh --run-local` bypasses DriveFS and keeps the run evidence locally.
+When the target is available, archiving writes one self-contained ZIP there,
+validates CRC/member hashes and the final path SHA. The local sidecar receipt
+records the archive path and ZIP SHA and leaves cloud synchronization
+`UNCONFIRMED`; this environment cannot independently obtain a Drive File ID or
+verify asynchronous cloud sync.
 
 Therefore this is a completed static platform implementation, but real
 DriveFS write/sync acceptance remains BLOCKED until the specified path is
 available and can be verified. No experiment is authorized or run by this QA.
+
+## Follow-up delta for d693be083b64f8391746b25c2e6b6c54d7b7e4d4
+
+Scope: decouple local execution from the fixed DriveFS archive path, freeze the
+run manifest before packaging, and split CUSTOM diagnostics from the output
+page. No physical circuit, source, stimulus, historical run, or raw was changed.
+
+- `./try.sh` remains strict archive-on-complete mode. Its exact DriveFS
+  preflight still blocks before run-ID allocation and solver invocation when
+  the configured path is unavailable.
+- `./try.sh --run-local` skips all DriveFS checks and ZIP creation, while
+  retaining the local run directory and raw evidence.
+- `./archive.sh <RUN_ID>` archives only the named completed run to the fixed
+  DriveFS target. There is no target override or fallback. The sidecar receipt
+  reports cloud synchronization as `UNCONFIRMED` and has no invented File ID.
+- The finalized `manifest.json` contains run facts and evidence hashes. Its
+  exact bytes and SHA are checked inside/outside the ZIP. ZIP identity and
+  Drive metadata are confined to `archive_receipt.json`, which is excluded
+  from the ZIP; the ZIP does not hash itself.
+- `res.html` is rendered with exactly the eight output probes in both profiles.
+  CUSTOM adds only the explicitly configured raw probes and an extra
+  `custom.html` showing only those diagnostics.
+- Shell syntax, Python syntax, `git diff --check`, static dry-run, and 21 unit
+  tests passed. End-to-end run/archive tests used a synthetic solver double,
+  synthetic CSV, and a temporary directory; real JoSIM was not invoked and no
+  DriveFS write was attempted. The pre-existing DriveFS acceptance blocker
+  therefore remains for archive mode in this environment, while local-only
+  execution is covered without DriveFS.
+- Historical `final_runs/` contents and V9/V10 run evidence remain untouched.

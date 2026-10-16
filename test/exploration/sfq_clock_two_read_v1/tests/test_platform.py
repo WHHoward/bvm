@@ -33,6 +33,69 @@ def configured(**changes: str) -> dict[str, str]:
     return values
 
 
+def config_bytes(values: dict[str, str]) -> bytes:
+    return ("\n".join(f"{key}={value}" for key, value in values.items()) + "\n").encode()
+
+
+def make_fake_solver(path: Path) -> Path:
+    code = """#!/usr/bin/env python3
+import csv
+import sys
+from pathlib import Path
+
+if sys.argv[1:] == ["--version"]:
+    print("synthetic-test-double; not JoSIM")
+    raise SystemExit(0)
+if sys.argv[1:] != ["-o", "raw.csv", "deck.cir"]:
+    raise SystemExit(9)
+probes = [
+    line.split(None, 1)[1]
+    for line in Path("deck.cir").read_text(encoding="utf-8").splitlines()
+    if line.lower().startswith(".print ")
+]
+with open("raw.csv", "w", newline="", encoding="utf-8") as stream:
+    writer = csv.writer(stream)
+    writer.writerow(["time", *probes])
+    for index, t in enumerate(("0", "0.01", "0.02", "0.03", "0.04")):
+        values = [0.0] * len(probes)
+        if index == 2:
+            values[0] = 0.123456789
+        writer.writerow([t, *values])
+"""
+    path.write_text(code, encoding="utf-8")
+    path.chmod(0o755)
+    return path
+
+
+def run_with_fake_solver(root: Path, profile: str = "OUTPUTS") -> Path:
+    runs = root / "runs"
+    runs.mkdir()
+    (runs / "run_index.json").write_text(json.dumps({
+        "schema": "sfq-clock-two-read-run-index-v1",
+        "historical_id_floor": 0,
+        "next_sequence": 1,
+        "reserved": [],
+    }), encoding="utf-8")
+    values = configured(CASE_NAME=f"TEST_{profile}", PROBE_PROFILE=profile)
+    if profile == "CUSTOM":
+        values["CUSTOM_PROBES_FILE"] = "tests/fixtures/custom_probes_sample.txt"
+    ctx = platform.build_case(values)
+    fake_solver = make_fake_solver(root / "fake-josim")
+    output = io.StringIO()
+    with patch.object(platform, "_drive_write_probe", side_effect=AssertionError("DriveFS was queried")):
+        with contextlib.redirect_stdout(output):
+            result = platform.execute(
+                ctx, config_bytes(values), run_local=True,
+                runs_dir=runs, solver_override=fake_solver,
+            )
+    if result != 0:
+        raise AssertionError(output.getvalue())
+    run_dirs = [path for path in runs.iterdir() if path.is_dir()]
+    if len(run_dirs) != 1:
+        raise AssertionError(f"expected one local run directory, got {run_dirs}")
+    return run_dirs[0]
+
+
 class PlatformConfigTests(unittest.TestCase):
     def test_default_80_68_configuration(self):
         values, _ = platform.read_config()
@@ -218,45 +281,124 @@ class ArtifactAndArchiveTests(unittest.TestCase):
             self.assertEqual(second, "V9R002_CASE")
             self.assertTrue(first_dir.is_dir())
 
-    def test_archive_integrity_in_temporary_folder_not_drive(self):
+    def test_run_local_bypasses_drive_and_keeps_only_output_page(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
-            run = root / "runs" / "V9R001_TEST"
-            run.mkdir(parents=True)
-            (run / "sources_frozen").mkdir()
-            (run / "manifest.json").write_text(json.dumps({
-                "run_id": "V9R001_TEST",
-                "case_name": "TEST",
-            }), encoding="utf-8")
-            (run / "deck.cir").write_text(".tran 0.01p 400p\n", encoding="utf-8")
-            (run / "stimulus.inc").write_text("* synthetic only\n", encoding="utf-8")
-            (run / "USER_CASE.snapshot.env").write_text("A=1\n", encoding="utf-8")
-            (run / "PREFLIGHT.md").write_text("synthetic archive test\n", encoding="utf-8")
-            (run / "probe_manifest.json").write_text("{}\n", encoding="utf-8")
-            (run / "raw.csv").write_text(
-                "time," + ",".join(platform.DEFAULT_PROBES) + "\n"
-                "0," + ",".join("0" for _ in platform.DEFAULT_PROBES) + "\n",
-                encoding="utf-8",
-            )
-            (run / "run.log").write_text("synthetic only; no JoSIM\n", encoding="utf-8")
-            (run / "res.html").write_text("<html><script>standalone</script></html>\n", encoding="utf-8")
-            (run / "sources_frozen" / "example.cir").write_text("synthetic\n", encoding="utf-8")
+            run = run_with_fake_solver(root, "OUTPUTS")
+            self.assertEqual((run / "raw.csv").is_file(), True)
+            self.assertEqual((run / "res.html").is_file(), True)
+            self.assertFalse((run / "custom.html").exists())
+            self.assertFalse((run / "archive_receipt.json").exists())
+            self.assertFalse(list((root / "runs").rglob("*.zip")))
+            manifest_bytes = (run / "manifest.json").read_bytes()
+            manifest = json.loads(manifest_bytes)
+            self.assertEqual(manifest["run_mode"], "LOCAL_ONLY")
+            self.assertEqual(manifest["visualization"]["res_probe_labels"], list(platform.DEFAULT_PROBES))
+            self.assertEqual(manifest["visualization"]["custom_probe_labels"], [])
+
+    def test_custom_local_run_creates_only_explicit_custom_page(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            run = run_with_fake_solver(root, "CUSTOM")
+            self.assertTrue((run / "res.html").is_file())
+            self.assertTrue((run / "custom.html").is_file())
+            html_files = {p.name for p in run.glob("*.html")}
+            self.assertEqual(html_files, {"res.html", "custom.html"})
+            output_html = (run / "res.html").read_text(encoding="utf-8", errors="replace")
+            custom_html = (run / "custom.html").read_text(encoding="utf-8", errors="replace")
+            for signal in platform.DEFAULT_PROBES:
+                self.assertIn(signal, output_html)
+                self.assertNotIn(signal, custom_html)
+            self.assertIn("V(CLK_D0)", custom_html)
+            self.assertIn("P(B_JM1|XBVM_R1C1)", custom_html)
+            self.assertNotIn("V(CLK_D0)", output_html)
+
+    def test_zip_manifest_is_identical_and_receipt_stays_outside_zip(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            run = run_with_fake_solver(root, "OUTPUTS")
+            manifest_path = run / "manifest.json"
+            manifest_bytes = manifest_path.read_bytes()
+            manifest_sha = platform.sha256_bytes(manifest_bytes)
+            frozen_manifest = json.loads(manifest_bytes)
+            for archive_only_key in (
+                "archive", "zip_sha256", "drive_path", "drive_file_id",
+                "cloud_sync_status",
+            ):
+                self.assertNotIn(archive_only_key, frozen_manifest)
+            evidence_names = {item["path"] for item in frozen_manifest["evidence_files"]}
+            self.assertNotIn("manifest.json", evidence_names)
+            self.assertNotIn("archive_receipt.json", evidence_names)
+            raw = run / "raw.csv"
+            raw_sha_before = platform.sha256_file(raw)
             target = root / "drivefs-test"
             target.mkdir()
-            result = platform.create_archive(run, target, folder_id="TEST_FOLDER")
-            self.assertTrue(result["crc_verified"])
-            self.assertTrue(result["member_sha256_verified"])
-            self.assertEqual(result["status"], "DRIVEFS_PATH_SHA_VERIFIED_CLOUD_SYNC_UNCONFIRMED")
-            archives = list(target.glob("*.zip"))
-            self.assertEqual(len(archives), 1)
-            with zipfile.ZipFile(archives[0]) as archive:
+            receipt = platform.archive_completed_run(
+                run.name, target_dir=target, runs_dir=root / "runs", folder_id="TEST_FOLDER"
+            )
+            self.assertEqual(manifest_path.read_bytes(), manifest_bytes)
+            self.assertEqual(receipt["manifest_sha256"], manifest_sha)
+            self.assertTrue(receipt["manifest_bytes_identical_in_zip"])
+            self.assertEqual(receipt["cloud_sync_status"], "UNCONFIRMED")
+            self.assertIsNone(receipt["drive_file_id"])
+            self.assertEqual(platform.sha256_file(raw), raw_sha_before)
+            zip_path = target / receipt["zip_name"]
+            self.assertEqual(platform.sha256_file(zip_path), receipt["zip_sha256"])
+            with zipfile.ZipFile(zip_path) as archive:
                 self.assertIsNone(archive.testzip())
-                names = archive.namelist()
-                self.assertTrue(any(name.endswith("/raw.csv") for name in names))
-                self.assertTrue(any(name.endswith("/res.html") for name in names))
-                self.assertTrue(any(name.endswith("/ARCHIVE_MANIFEST.json") for name in names))
-            with self.assertRaisesRegex(platform.PlatformError, "refusing to overwrite"):
-                platform.create_archive(run, target, folder_id="TEST_FOLDER")
+                self.assertEqual(
+                    archive.read(f"{run.name}/manifest.json"),
+                    manifest_bytes,
+                )
+                self.assertNotIn(f"{run.name}/archive_receipt.json", archive.namelist())
+                self.assertNotIn(f"{run.name}/ARCHIVE_MANIFEST.json", archive.namelist())
+                self.assertIn(f"{run.name}/raw.csv", archive.namelist())
+                self.assertIn(f"{run.name}/res.html", archive.namelist())
+            receipt_path = run / "archive_receipt.json"
+            self.assertTrue(receipt_path.is_file())
+            self.assertEqual(json.loads(receipt_path.read_bytes()), receipt)
+            with self.assertRaisesRegex(platform.PlatformError, "receipt already exists"):
+                platform.archive_completed_run(
+                    run.name, target_dir=target, runs_dir=root / "runs", folder_id="TEST_FOLDER"
+                )
+            self.assertEqual(len(list(target.glob("*.zip"))), 1)
+
+    def test_archive_failure_preserves_raw_and_frozen_manifest(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            run = run_with_fake_solver(root, "OUTPUTS")
+            manifest_before = (run / "manifest.json").read_bytes()
+            raw_sha_before = platform.sha256_file(run / "raw.csv")
+            missing_target = root / "not-mounted"
+            with self.assertRaisesRegex(platform.PlatformError, "not accessible"):
+                platform.archive_completed_run(
+                    run.name, target_dir=missing_target, runs_dir=root / "runs"
+                )
+            self.assertEqual((run / "manifest.json").read_bytes(), manifest_before)
+            self.assertEqual(platform.sha256_file(run / "raw.csv"), raw_sha_before)
+            self.assertFalse((run / "archive_receipt.json").exists())
+            self.assertFalse(list(root.rglob("*.zip")))
+
+    def test_archive_build_error_preserves_raw_and_frozen_manifest(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            run = run_with_fake_solver(root, "OUTPUTS")
+            manifest_before = (run / "manifest.json").read_bytes()
+            raw_sha_before = platform.sha256_file(run / "raw.csv")
+            target = root / "drivefs-test"
+            target.mkdir()
+            with patch.object(platform, "_drive_write_probe", return_value=(True, "test pass")):
+                with patch.object(
+                    platform, "create_archive", side_effect=platform.PlatformError("test ZIP fault")
+                ):
+                    with self.assertRaisesRegex(platform.PlatformError, "test ZIP fault"):
+                        platform.archive_completed_run(
+                            run.name, target_dir=target, runs_dir=root / "runs"
+                        )
+            self.assertEqual((run / "manifest.json").read_bytes(), manifest_before)
+            self.assertEqual(platform.sha256_file(run / "raw.csv"), raw_sha_before)
+            self.assertFalse((run / "archive_receipt.json").exists())
+            self.assertFalse(list(target.glob("*.zip")))
 
     def test_classic_plot_keeps_synthetic_short_pulse_and_is_standalone(self):
         with tempfile.TemporaryDirectory() as temp:
